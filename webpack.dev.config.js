@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const { resolve } = require('path');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const HTMLWebpackPlugin = require('html-webpack-plugin')
@@ -49,7 +50,7 @@ const config = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(s[ac]ss|css)$/i,
+        test: /\.(sass|less|css)$/i,
         use: [
           // {
           //   loader: MiniCSSExtractPlugin.loader,
@@ -59,9 +60,17 @@ const config = {
           // },
           'style-loader',
           'css-loader',
+          // {
+          //   loader: 'postcss-loader',
+          //   options: {
+          //     plugins: () => [
+          //       require('autoprefixer'),
+          //     ],
+          //   },
+          // },
           'sass-loader',
         ],
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
