@@ -29,7 +29,7 @@ const Users = () => {
   return (
     <>
       <h3 className={users.length ? 'badge bg-primary' : 'badge bg-danger'}>{renderPhrase(users.length)}</h3>
-      <table className="table table-striped">
+      <table className="table table-striped" hidden={!users.length}>
         <thead>
           <tr>
             <th scope="col">Имя</th>
