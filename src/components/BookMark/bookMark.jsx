@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
+import PropTypes from 'prop-types';
 
-const BookMark = ({ it }) => {
+const BookMark = ({ bookmark }) => {
   const journal = (
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-journal" viewBox="0 0 16 16">
       <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
@@ -20,8 +20,12 @@ const BookMark = ({ it }) => {
   )
 
   return (
-    <i>{it.bookmark ? journalBookmark : journal}</i>
+    <i>{bookmark ? journalBookmark : journal}</i>
   )
+}
+
+BookMark.propTypes = {
+  bookmark: PropTypes.bool.isRequired,
 }
 
 export default BookMark

@@ -2,10 +2,22 @@
 import React, { useState } from 'react'
 import SearchStatus from './SearchStatus/searchStatus'
 import Users from './Users/users'
+import Pagination from './Pagination/pagination'
 import api from '../api'
+import paginate from '../utils/paginate'
+import '../styles/main.css'
 
 const App = () => {
   const [users, setUsers] = useState(api.users.fetchAll())
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const itemsCount = users.length
+  const pageSize = 4
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex)
+  }
+
+  const usersCrop = paginate(users, currentPage, pageSize)
 
   const handleBookMark = (userId) => {
     setUsers(users.map((it) => {
@@ -16,11 +28,6 @@ const App = () => {
       }
       return it
     }))
-    // it._id === userId && it.bookmark === false
-    //   ? { ...it, bookmark: true }
-    //   : (it._id === userId && it.bookmark === true)
-    //     ? { ...it, bookmark: false }
-    //     : it)))
   }
 
   const handleDelete = (userId) => {
@@ -55,8 +62,17 @@ const App = () => {
       />
       <Users
         users={users}
+        usersCrop={usersCrop}
         handleDelete={(userId) => handleDelete(userId)}
         handleBookMark={(userId) => handleBookMark(userId)}
+        handlePageChange={handlePageChange}
+        currentPage={currentPage}
+      />
+      <Pagination
+        itemsCount={itemsCount}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
       />
     </>
   )

@@ -1,10 +1,10 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 import React from 'react'
+import PropTypes from 'prop-types';
 import User from '../User/user'
 
 const Users = ({
-  users, handleDelete, handleBookMark,
+  users, usersCrop, handleDelete, handleBookMark, handlePageChange, currentPage,
 }) => (
   <table className="table table-striped" hidden={!users.length}>
     <thead>
@@ -20,12 +20,39 @@ const Users = ({
     </thead>
     <tbody>
       <User
-        users={users}
+        usersCrop={usersCrop}
         handleDelete={(userId) => handleDelete(userId)}
         handleBookMark={(userId) => handleBookMark(userId)}
+        handlePageChange={handlePageChange}
+        currentPage={currentPage}
       />
     </tbody>
   </table>
 )
+
+Users.propTypes = {
+  users: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    profession: PropTypes.objectOf(PropTypes.string),
+    qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    completedMeetings: PropTypes.number,
+    rate: PropTypes.number,
+    bookmark: PropTypes.bool,
+  })).isRequired,
+  usersCrop: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    profession: PropTypes.objectOf(PropTypes.string),
+    qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    completedMeetings: PropTypes.number,
+    rate: PropTypes.number,
+    bookmark: PropTypes.bool,
+  })).isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleBookMark: PropTypes.func.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+}
 
 export default Users
