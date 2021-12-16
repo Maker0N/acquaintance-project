@@ -7,7 +7,7 @@ const Pagination = ({
   const pages = Math.ceil(itemsCount / pageSize)
   const pagesArr = Array(pages).fill(0).map((it, index) => index + 1)
   return (
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" className="d-flex justify-content-center">
       <ul className="pagination">
         {pagesArr.map((item) => (
           <li
