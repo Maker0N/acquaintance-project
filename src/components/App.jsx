@@ -10,7 +10,12 @@ import '../styles/main.css'
 
 const App = () => {
   const [users, setUsers] = useState([])
-  const [professions, setProfessions] = useState([])
+
+  // ----------------data from array-----------------
+  // const [professions, setProfessions] = useState([])
+
+  // ----------------data from object-----------------
+  const [professionsObject, setProfessionsObject] = useState({})
   const [selectedProf, setSelectedProf] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
   const [usersWereLoaded, setUsersWereLoaded] = useState(false)
@@ -23,9 +28,16 @@ const App = () => {
     api.users.fetchAll().then((data) => setUsers(data)).then(() => setUsersWereLoaded(true))
   }, [])
 
+  // ----------------data from array-----------------
+  // useEffect(() => {
+  //   api.professions.fetchAll()
+  //     .then((data) => setProfessions(data))
+  // }, [])
+
+  // ----------------data from object-----------------
   useEffect(() => {
-    api.professions.fetchAll()
-      .then((data) => setProfessions(data))
+    api.professionsObject.fetchAll()
+      .then((data) => setProfessionsObject(data))
   }, [])
 
   const handleProfessionSelect = (item) => {
@@ -92,7 +104,10 @@ const App = () => {
           ? (
             <div>
               <GroupList
-                professions={professions}
+                // ----------------data from array-----------------
+                // professions={professions}
+                // ----------------data from object-----------------
+                professions={professionsObject}
                 onItemSelect={(item) => handleProfessionSelect(item)}
                 selectedItem={selectedProf}
                 handlePageChange={handlePageChange}

@@ -13,12 +13,21 @@ export const professions = [
   { _id: '67rdca3eeb7f6fgeed471822', name: 'Инженер' },
   { _id: '67rdca3eeb7f6fgeed471824', name: 'Актер' },
   { _id: '67rdca3eeb7f6fgeed471829', name: 'Повар' },
-];
+]
+
+// ----------------data from array------------------
+// const fetchAll = () => new Promise((resolve) => {
+//   window.setTimeout(() => {
+//     resolve(professions);
+//   }, 2000);
+// });
+
+// ----------------data from object-----------------
 const fetchAll = () => new Promise((resolve) => {
   window.setTimeout(() => {
-    resolve(professions);
-  }, 2000);
-});
+    resolve(professionsObject)
+  }, 2000)
+})
 
 export default {
   fetchAll,
