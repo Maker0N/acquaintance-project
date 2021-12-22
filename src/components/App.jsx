@@ -1,11 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react'
 import SearchStatus from './SearchStatus/searchStatus'
-import Users from './Users/users'
+import UsersTable from './UsersTable/usersTable'
 import Pagination from './Pagination/pagination'
 import GroupList from './GroupList/groupList'
 import api from '../api'
 import paginate from '../utils/paginate'
+import dinamicSort from '../utils/dinamicSort'
 import '../styles/main.css'
 
 const App = () => {
@@ -19,8 +20,9 @@ const App = () => {
   const [selectedProf, setSelectedProf] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
   const [usersWereLoaded, setUsersWereLoaded] = useState(false)
+  const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
 
-  const pageSize = 2
+  const pageSize = 4
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex)
   }
@@ -48,7 +50,8 @@ const App = () => {
     ? users.filter((it) => it.profession.name === selectedProf.name)
     : users
   const itemsCount = filteredUsers.length
-  const usersCrop = paginate(filteredUsers, currentPage, pageSize)
+  const sortedUsers = filteredUsers.sort(dinamicSort(sortBy.path, sortBy.order))
+  const usersCrop = paginate(sortedUsers, currentPage, pageSize)
 
   const clearFilter = () => {
     setSelectedProf({})
@@ -67,6 +70,10 @@ const App = () => {
 
   const handleDelete = (userId) => {
     setUsers(users.filter((it) => it._id !== userId))
+  }
+
+  const handleSort = (item) => {
+    setSortBy(item)
   }
 
   const renderPhrase = (number) => {
@@ -124,13 +131,15 @@ const App = () => {
           )
           : null}
         <div>
-          <Users
+          <UsersTable
             users={users}
             usersCrop={usersCrop}
             handleDelete={(userId) => handleDelete(userId)}
             handleBookMark={(userId) => handleBookMark(userId)}
             handlePageChange={handlePageChange}
             currentPage={currentPage}
+            onSort={(item) => handleSort(item)}
+            selectedSort={sortBy}
           />
         </div>
       </div>
