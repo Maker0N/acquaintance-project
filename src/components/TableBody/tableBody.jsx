@@ -52,7 +52,7 @@ TableBody.propTypes = {
     bookmark: PropTypes.bool,
   })).isRequired,
   columns: PropTypes.objectOf(PropTypes.objectOf(PropTypes
-    .oneOfType([PropTypes.string, PropTypes.func])))
+    .oneOfType([PropTypes.string, PropTypes.func, PropTypes.bool])))
     .isRequired,
 }
 

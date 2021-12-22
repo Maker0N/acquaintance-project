@@ -39,20 +39,8 @@ TableHeader.propTypes = {
   onSort: PropTypes.func.isRequired,
   selectedSort: PropTypes.objectOf(PropTypes.string).isRequired,
   columns: PropTypes
-    .objectOf(PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.func])))
-  // PropTypes.shape({
-  //   name: PropTypes.objectOf(PropTypes.string),
-  //   qualities: PropTypes.objectOf(PropTypes.string),
-  //   profession: PropTypes.objectOf(PropTypes.string),
-  //   completedMeetings: PropTypes.objectOf(PropTypes.string),
-  //   rate: PropTypes.objectOf(PropTypes.string),
-  //   bookmark: PropTypes.shape({
-  //     path: PropTypes.string,
-  //     name: PropTypes.string,
-  //     component: PropTypes.func,
-  //   }),
-  //   delete: PropTypes.objectOf(PropTypes.string),
-  // })
+    .objectOf(PropTypes.objectOf(PropTypes
+      .oneOfType([PropTypes.string, PropTypes.func, PropTypes.bool])))
     .isRequired,
 }
 
