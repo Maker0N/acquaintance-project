@@ -20,7 +20,7 @@ const App = () => {
   const [selectedProf, setSelectedProf] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
   const [usersWereLoaded, setUsersWereLoaded] = useState(false)
-  const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
+  const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc', downUp: true })
 
   const pageSize = 4
   const handlePageChange = (pageIndex) => {

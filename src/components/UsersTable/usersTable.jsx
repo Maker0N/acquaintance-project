@@ -18,7 +18,7 @@ const UsersTable = ({
   selectedSort,
 }) => {
   const columns = {
-    name: { path: 'name', name: 'Имя', downUp: true },
+    name: { path: 'name', name: 'Имя' },
     qualities: {
       name: 'Качества',
       component(user) {
@@ -27,11 +27,10 @@ const UsersTable = ({
           <QualitiesList qualities={qualities} />
         )
       },
-      downUp: false,
     },
-    profession: { path: 'profession.name', name: 'Профессия', downUp: false },
-    completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз', downUp: false },
-    rate: { path: 'rate', name: 'Оценка', downUp: false },
+    profession: { path: 'profession.name', name: 'Профессия' },
+    completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз' },
+    rate: { path: 'rate', name: 'Оценка' },
     bookmark: {
       path: 'bookmark',
       name: 'Избранное',
@@ -51,7 +50,6 @@ const UsersTable = ({
           </button>
         )
       },
-      downUp: false,
     },
     delete: {
       name: 'Удалить',
@@ -71,7 +69,6 @@ const UsersTable = ({
           </button>
         )
       },
-      downUp: false,
     },
   }
 
@@ -88,15 +85,6 @@ const UsersTable = ({
         currentPage,
       }}
       />
-      {/* <tbody>
-        <User
-          usersCrop={usersCrop}
-          handleDelete={(userId) => handleDelete(userId)}
-          handleBookMark={(userId) => handleBookMark(userId)}
-          handlePageChange={handlePageChange}
-          currentPage={currentPage}
-        />
-      </tbody> */}
     </table>
   )
 }
@@ -125,7 +113,8 @@ UsersTable.propTypes = {
   handlePageChange: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   onSort: PropTypes.func.isRequired,
-  selectedSort: PropTypes.objectOf(PropTypes.string).isRequired,
+  selectedSort: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.bool]))
+    .isRequired,
 }
 
 export default UsersTable
