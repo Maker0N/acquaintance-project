@@ -14,7 +14,7 @@ const config = {
   output: {
     filename: 'js/[name].[contenthash].js',
     path: resolve(__dirname, 'dist'),
-    publicPath: '',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -35,6 +35,7 @@ const config = {
         errors: true,
       },
     },
+    historyApiFallback: true,
   },
   module: {
     rules: [

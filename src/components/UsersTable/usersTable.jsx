@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react'
 import PropTypes from 'prop-types'
-// import User from '../User/user'
 import TableHeader from '../TableHeader/tableHeader'
 import TableBody from '../TableBody/tableBody'
 import QualitiesList from '../QualitiesList/qualitiesList'

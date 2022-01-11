@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 const TableBody = ({
@@ -28,15 +29,27 @@ const TableBody = ({
 
   return (
     <tbody>
-      {data.map((item) => (
-        <tr key={item._id}>
-          {Object.keys(columns).map((column) => (
-            <td key={column}>
-              {renderContent(item, column)}
-            </td>
-          ))}
-        </tr>
-      ))}
+      {data.map((item) => {
+        const idUser = `/users/${item._id}`
+        return (
+          <tr key={item._id}>
+            {Object.keys(columns).map((column) => (
+              column === 'name'
+                ? (
+                  <td key={column}>
+                    <Link to={idUser}>{renderContent(item, column)}</Link>
+                  </td>
+                )
+
+                : (
+                  <td key={column}>
+                    {renderContent(item, column)}
+                  </td>
+                )
+            ))}
+          </tr>
+        )
+      })}
     </tbody>
   )
 }

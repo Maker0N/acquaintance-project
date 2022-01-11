@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/prefer-default-export */
 import { professionsObject as professions } from './professions.api';
 
@@ -151,6 +152,13 @@ const fetchAll = () => new Promise((resolve) => {
   }, 2000);
 });
 
+const getById = (id) => new Promise((resolve) => {
+  window.setTimeout(() => {
+    resolve(users.find((user) => user._id === id))
+  }, 1000)
+})
+
 export {
   fetchAll,
+  getById,
 };
