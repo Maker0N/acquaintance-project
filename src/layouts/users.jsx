@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react'
 import SearchStatus from '../components/SearchStatus/searchStatus'
+import Input from '../components/Input/input'
 import UsersTable from '../components/UsersTable/usersTable'
 import Pagination from '../components/Pagination/pagination'
 import GroupList from '../components/GroupList/groupList'
@@ -11,6 +12,7 @@ import '../styles/main.css'
 
 const Users = () => {
   const [users, setUsers] = useState([])
+  const [searchUsers, setSearchUsers] = useState([])
 
   // ----------------data from array-----------------
   // const [professions, setProfessions] = useState([])
@@ -21,12 +23,14 @@ const Users = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [usersWereLoaded, setUsersWereLoaded] = useState(false)
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc', downUp: true })
+  const [search, setSearch] = useState('')
 
   const pageSize = 4
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex)
   }
   useEffect(() => {
+    api.users.fetchAll().then((data) => setSearchUsers(data))
     api.users.fetchAll().then((data) => setUsers(data)).then(() => setUsersWereLoaded(true))
   }, [])
 
@@ -42,8 +46,14 @@ const Users = () => {
       .then((data) => setProfessionsObject(data))
   }, [])
 
+  const clearSearch = () => {
+    setSearch('')
+  }
+
   const handleProfessionSelect = (item) => {
     setSelectedProf(item)
+    clearSearch()
+    setUsers(searchUsers)
   }
 
   const filteredUsers = Object.keys(selectedProf).length !== 0
@@ -95,6 +105,15 @@ const Users = () => {
     return phrase
   }
 
+  const getInput = ({ target }) => {
+    setSearch(target.value)
+    setUsers(searchUsers)
+    setUsers((prev) => prev.filter((item) => item.name
+      .toLowerCase()
+      .includes(target.value)))
+    clearFilter()
+  }
+
   return (
     <>
       {usersWereLoaded
@@ -131,6 +150,11 @@ const Users = () => {
           )
           : null}
         <div>
+          <Input
+            name="search"
+            onChange={(target) => getInput(target)}
+            value={search}
+          />
           <UsersTable
             users={users}
             usersCrop={usersCrop}
