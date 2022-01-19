@@ -1,7 +1,7 @@
 /* eslint-disable no-unneeded-ternary */
 import React from 'react'
 import PropTypes from 'prop-types'
-import DownUp from '../DownUp/downUp'
+import DownUp from '../downUp'
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
   const handleSort = (item) => {

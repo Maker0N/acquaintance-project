@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Qualities from '../Quality/qualities'
+import Qualities from './qualities'
 
 const QualitiesList = ({ qualities }) => <Qualities qualities={qualities} />
 

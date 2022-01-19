@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react'
 import PropTypes from 'prop-types'
-import TableHeader from '../TableHeader/tableHeader'
-import TableBody from '../TableBody/tableBody'
-import QualitiesList from '../QualitiesList/qualitiesList'
-import BookMark from '../BookMark/bookMark'
+import TableHeader from '../common/Table/tableHeader'
+import TableBody from '../common/Table/tableBody'
+import QualitiesList from './qualities/qualitiesList'
+import BookMark from '../common/bookMark'
 
 const UsersTable = ({
   users,
