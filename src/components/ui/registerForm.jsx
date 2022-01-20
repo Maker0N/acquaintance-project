@@ -2,17 +2,26 @@
 /* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react'
 import TextField from '../common/form/textField'
+import SelectField from '../common/form/selectField'
 import validator from '../../utils/validator'
+import api from '../../api'
 
 const RegisterForm = () => {
-  const [data, setData] = useState({ login: '', password: '' })
+  const [data, setData] = useState({ register: '', password: '', profession: '' })
+  const [professionsObject, setProfessionsObject] = useState({})
   const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    api.professionsObject.fetchAll()
+      .then((data) => setProfessionsObject(data))
+  }, [])
+
   const handleChange = ({ target }) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }))
   }
 
   const validatorConfig = {
-    login: {
+    register: {
       isRequired: { message: 'Login is required!' },
       isEmail: { message: 'Email is not corrected!' },
     },
@@ -21,6 +30,11 @@ const RegisterForm = () => {
       isCapital: { message: 'Password must contain capital letters!' },
       isSymbol: { message: 'Password must contain symbols!' },
       isMin: { message: 'Password must not be less than 8 characters!', value: 8 },
+    },
+    profession: {
+      isRequired: {
+        message: 'Profession is required!',
+      },
     },
   }
 
@@ -46,9 +60,9 @@ const RegisterForm = () => {
         label="Register (email)"
         name="register"
         type="text"
-        value={data.login}
+        value={data.register}
         onChange={(target) => handleChange(target)}
-        error={errors.login}
+        error={errors.register}
       />
       <TextField
         label="Password"
@@ -57,6 +71,14 @@ const RegisterForm = () => {
         value={data.password}
         onChange={(target) => handleChange(target)}
         error={errors.password}
+      />
+      <SelectField
+        defaultOption="Choose..."
+        label="Your profession"
+        value={data.profession}
+        option={professionsObject}
+        onChange={handleChange}
+        error={errors.profession}
       />
       <button type="submit" className="btn btn-primary w-100" disabled={!isValid}>Submit</button>
     </form>
