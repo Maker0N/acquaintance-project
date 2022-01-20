@@ -21,6 +21,7 @@ const TextField = ({
           name={name}
           value={value}
           onChange={(e) => onChange(e)}
+          autoComplete="on"
         />
         {type === 'password'
           && (

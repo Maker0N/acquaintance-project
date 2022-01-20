@@ -33,12 +33,16 @@ const SelectField = ({
   )
 }
 
+SelectField.defaultProps = {
+  error: undefined,
+}
+
 SelectField.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   option: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
-  error: PropTypes.string.isRequired,
+  error: PropTypes.string,
   defaultOption: PropTypes.string.isRequired,
 }
 
