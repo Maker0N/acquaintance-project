@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const SelectField = ({
-  label, value, onChange, option, error, defaultOption,
+  label, value, onChange, option, error, defaultOption, name,
 }) => {
   const optionArray = (!Array.isArray(option) && typeof option === 'object')
     ? Object.keys(option).map((optionName) => (
@@ -15,11 +15,11 @@ const SelectField = ({
   }
   return (
     <div className="mb-3">
-      <label htmlFor="select" className="form-label">{label}</label>
+      <label htmlFor={name} className="form-label">{label}</label>
       <select
         className={toggleClass()}
-        id="select"
-        name="profession"
+        id={name}
+        name={name}
         value={value}
         onChange={handleChange}
       >
@@ -41,6 +41,7 @@ SelectField.defaultProps = {
 }
 
 SelectField.propTypes = {
+  name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

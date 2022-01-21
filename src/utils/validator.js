@@ -6,9 +6,13 @@ export default function validator(data, config) {
   const errors = {}
   function validate(validateMethod, data, config) {
     switch (validateMethod) {
-      case 'isRequired':
-        if (data.trim() === '') return config.message
+      case 'isRequired': {
+        if (typeof data === 'boolean' && data === false) {
+          return config.message
+        }
+        if (typeof data === 'string' && data.trim() === '') return config.message
         break
+      }
 
       case 'isEmail': {
         const emailRegexp = /^\S+@\S+\.\S+$/g

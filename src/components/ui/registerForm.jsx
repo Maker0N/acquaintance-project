@@ -5,12 +5,13 @@ import TextField from '../common/form/textField'
 import SelectField from '../common/form/selectField'
 import RadioField from '../common/form/radioField'
 import MultiSelectField from '../common/form/multiSelectField'
+import CheckBoxField from '../common/form/checkBoxField'
 import validator from '../../utils/validator'
 import api from '../../api'
 
 const RegisterForm = () => {
   const [data, setData] = useState({
-    register: '', password: '', profession: '', sex: 'male', qualities: [],
+    register: '', password: '', profession: '', sex: 'male', qualities: [], licence: false,
   })
   const [professionsObject, setProfessionsObject] = useState({})
   const [qualitiesObject, setQualitiesObject] = useState({})
@@ -41,6 +42,11 @@ const RegisterForm = () => {
     profession: {
       isRequired: {
         message: 'Profession is required!',
+      },
+    },
+    licence: {
+      isRequired: {
+        message: 'Agree licence is required!',
       },
     },
   }
@@ -80,6 +86,7 @@ const RegisterForm = () => {
         error={errors.password}
       />
       <SelectField
+        name="profession"
         defaultOption="Choose..."
         label="Your profession"
         value={data.profession}
@@ -103,7 +110,16 @@ const RegisterForm = () => {
         onChange={handleChange}
         name="qualities"
         label="Your qualities"
+        defaultValue={data.qualities}
       />
+      <CheckBoxField
+        name="licence"
+        value={data.licence}
+        onChange={handleChange}
+        error={errors.licence}
+      >
+        Agree licence
+      </CheckBoxField>
       <button type="submit" className="btn btn-primary w-100" disabled={!isValid}>Submit</button>
     </form>
   )

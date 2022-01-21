@@ -4,10 +4,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react'
 import TextField from '../common/form/textField'
+import CheckBoxField from '../common/form/checkBoxField'
 import validator from '../../utils/validator'
 
 const LoginForm = () => {
-  const [data, setData] = useState({ login: '', password: '' })
+  const [data, setData] = useState({ login: '', password: '', stayOn: false })
   const [errors, setErrors] = useState({})
 
   const handleChange = (target) => {
@@ -61,6 +62,13 @@ const LoginForm = () => {
         onChange={(target) => handleChange(target)}
         error={errors.password}
       />
+      <CheckBoxField
+        name="stayOn"
+        value={data.stayOn}
+        onChange={handleChange}
+      >
+        Stay on system
+      </CheckBoxField>
       <button type="submit" className="btn btn-primary w-100" disabled={!isValid}>Submit</button>
     </form>
   )
