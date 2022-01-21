@@ -4,22 +4,26 @@ import React, { useState, useEffect } from 'react'
 import TextField from '../common/form/textField'
 import SelectField from '../common/form/selectField'
 import RadioField from '../common/form/radioField'
+import MultiSelectField from '../common/form/multiSelectField'
 import validator from '../../utils/validator'
 import api from '../../api'
 
 const RegisterForm = () => {
   const [data, setData] = useState({
-    register: '', password: '', profession: '', sex: 'male',
+    register: '', password: '', profession: '', sex: 'male', qualities: [],
   })
   const [professionsObject, setProfessionsObject] = useState({})
+  const [qualitiesObject, setQualitiesObject] = useState({})
   const [errors, setErrors] = useState({})
 
   useEffect(() => {
     api.professionsObject.fetchAll()
       .then((data) => setProfessionsObject(data))
+    api.qualities.fetchAll()
+      .then((data) => setQualitiesObject(data))
   }, [])
 
-  const handleChange = ({ target }) => {
+  const handleChange = (target) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }))
   }
 
@@ -92,6 +96,13 @@ const RegisterForm = () => {
         value={data.sex}
         name="sex"
         onChange={handleChange}
+        label="Your sex"
+      />
+      <MultiSelectField
+        options={qualitiesObject}
+        onChange={handleChange}
+        name="qualities"
+        label="Your qualities"
       />
       <button type="submit" className="btn btn-primary w-100" disabled={!isValid}>Submit</button>
     </form>

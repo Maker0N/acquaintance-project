@@ -10,6 +10,10 @@ const TextField = ({
     setShowPass((prev) => !prev)
   }
   const toggleClass = () => (!error ? 'form-control' : 'form-control is-invalid')
+
+  const handleChange = ({ target }) => {
+    onChange({ name: target.name, value: target.value })
+  }
   return (
     <div className="mb-3">
       <label htmlFor={label} className="form-label">{label}</label>
@@ -20,7 +24,7 @@ const TextField = ({
           className={toggleClass()}
           name={name}
           value={value}
-          onChange={(e) => onChange(e)}
+          onChange={handleChange}
           autoComplete="on"
         />
         {type === 'password'

@@ -9,7 +9,8 @@ import validator from '../../utils/validator'
 const LoginForm = () => {
   const [data, setData] = useState({ login: '', password: '' })
   const [errors, setErrors] = useState({})
-  const handleChange = ({ target }) => {
+
+  const handleChange = (target) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }))
   }
 

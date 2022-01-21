@@ -6,6 +6,7 @@ import * as users from './fake.api/user.api'
 
 // ----------------data from object-----------------
 import professionsObject from './fake.api/professions.api'
+import qualities from './fake.api/qualities.api'
 
 const API = {
   users,
@@ -14,6 +15,7 @@ const API = {
 
   // ----------------data from object-----------------
   professionsObject,
+  qualities,
 }
 
 export default API

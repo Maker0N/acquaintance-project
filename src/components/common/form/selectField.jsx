@@ -10,6 +10,9 @@ const SelectField = ({
       { name: option[optionName].name, value: option[optionName]._id }))
     : option
   const toggleClass = () => (!error ? 'form-select' : 'form-select is-invalid')
+  const handleChange = ({ target }) => {
+    onChange({ name: target.name, value: target.value })
+  }
   return (
     <div className="mb-3">
       <label htmlFor="select" className="form-label">{label}</label>
@@ -18,7 +21,7 @@ const SelectField = ({
         id="select"
         name="profession"
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
       >
         <option disabled value="">{defaultOption}</option>
         {optionArray && optionArray
