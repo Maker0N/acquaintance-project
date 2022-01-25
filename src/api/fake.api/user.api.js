@@ -172,12 +172,12 @@ if (!localStorage.getItem('users')) {
   localStorage.setItem('users', JSON.stringify(users));
 }
 
-const fetchAll = () => new Promise((resolve) => {
+export const fetchAll = () => new Promise((resolve) => {
   window.setTimeout(() => {
     resolve(JSON.parse(localStorage.getItem('users')));
   }, 2000);
 });
-const update = (id, data) => new Promise((resolve) => {
+export const update = (id, data) => new Promise((resolve) => {
   const usersLocal = JSON.parse(localStorage.getItem('users'));
   const userIndex = usersLocal.findIndex((u) => u._id === id);
   usersLocal[userIndex] = { ...usersLocal[userIndex], ...data };
@@ -185,7 +185,7 @@ const update = (id, data) => new Promise((resolve) => {
   resolve(usersLocal[userIndex]);
 });
 
-const getById = (id) => new Promise((resolve) => {
+export const getById = (id) => new Promise((resolve) => {
   window.setTimeout(() => {
     resolve(
       JSON.parse(localStorage.getItem('users')).find(

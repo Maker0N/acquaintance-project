@@ -26,7 +26,7 @@ const config = {
       directory: resolve(__dirname, 'dist'),
     },
     // contentBase: resolve(__dirname, 'dist'),
-    port: 8080,
+    port: 3000,
     host: 'localhost',
     // index: 'index.html',
     client: {

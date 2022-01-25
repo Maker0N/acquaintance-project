@@ -1,14 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import api from '../../api'
+import { getById } from '../../../api/fake.api/user.api'
 
-const User = () => {
+const UserPage = () => {
   const { id } = useParams()
   const [user, setUser] = useState(null)
   useEffect(() => {
-    api.users.getById(id).then((data) => setUser(data))
+    getById(id).then((data) => setUser(data))
   }, [])
+  const editURL = `/users/${id}/edit`
 
   if (user) {
     return (
@@ -34,11 +35,11 @@ const User = () => {
           {' '}
           {user.rate}
         </div>
-        <Link to="/users"><button className="mx-1 fs-6" type="button">Все Пользователи</button></Link>
+        <Link to={editURL}><button className="mx-1 fs-6" type="button">Change</button></Link>
       </>
     )
   }
   return <div>LOADING...</div>
 }
 
-export default User
+export default UserPage

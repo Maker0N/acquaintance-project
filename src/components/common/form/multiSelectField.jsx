@@ -36,7 +36,7 @@ MultiSelectField.propTypes = {
   onChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string.isRequired,
+  defaultValue: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 }
 
 export default MultiSelectField
