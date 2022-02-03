@@ -11,12 +11,12 @@ const AddCommentForm = ({
   const validatorConfig = {
     userId: {
       isRequired: {
-        message: 'Выберите от чьего имени вы хотите отправить сообщение',
+        message: 'Choose a name!',
       },
     },
     content: {
       isRequired: {
-        message: 'Сообщение не может быть пустым',
+        message: 'Message cannot be empty!',
       },
     },
   };
