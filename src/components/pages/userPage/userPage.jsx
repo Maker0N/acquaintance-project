@@ -1,42 +1,51 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { getById } from '../../../api/fake.api/user.api'
+import { useParams } from 'react-router-dom'
+import { getById, fetchAll } from '../../../api/fake.api/user.api'
+import UserCard from '../../ui/userCard'
+import QualitiesCard from '../../ui/qualitiesCard'
+import MeetingsCard from '../../ui/meetingsCard'
+import Comments from '../../ui/comments'
 
 const UserPage = () => {
   const { id } = useParams()
   const [user, setUser] = useState(null)
+  const [users, setUsers] = useState()
+
   useEffect(() => {
     getById(id).then((data) => setUser(data))
+    fetchAll().then((data) => setUsers(data))
   }, [])
+
   const editURL = `/users/${id}/edit`
 
-  if (user) {
+  let usersForOption
+  if (users) {
+    usersForOption = users.map((it) => ({ name: it.name, value: it._id }))
+  }
+
+  if (user && users) {
     return (
-      <>
-        <div className="fw-bold mx-1 fs-1">{user.name}</div>
-        <div className="mx-1 fs-1">
-          Профессия:
-          {' '}
-          {user.profession.name}
+      <div className="container">
+        <div className="row gutters-sm">
+          <div className="col-md-4 mb-3">
+            <UserCard
+              name={user.name}
+              profession={user.profession.name}
+              rate={user.rate}
+              editURL={editURL}
+            />
+            <QualitiesCard qualities={user.qualities} />
+            <MeetingsCard completedMeetings={user.completedMeetings} />
+          </div>
+          <div className="col-md-8">
+            <Comments
+              option={usersForOption}
+              pageId={id}
+            />
+          </div>
         </div>
-        {user.qualities.map((it) => {
-          const classBadgeColor = `badge bg-${it.color} mx-1 fs-6`
-          return (
-            <h5 className={classBadgeColor} key={it._id}>{it.name}</h5>)
-        })}
-        <div className="mx-1 fs-6">
-          Completed Meetings:
-          {' '}
-          {user.completedMeetings}
-        </div>
-        <div className="mx-1 fs-2">
-          Rate:
-          {' '}
-          {user.rate}
-        </div>
-        <Link to={editURL}><button className="mx-1 fs-6" type="button">Change</button></Link>
-      </>
+      </div>
     )
   }
   return <div>LOADING...</div>

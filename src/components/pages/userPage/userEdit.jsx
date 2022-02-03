@@ -3,6 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import BackHistoryButton from '../../common/backButton'
 import TextField from '../../common/form/textField'
 import MultiSelectField from '../../common/form/multiSelectField'
 import RadioField from '../../common/form/radioField'
@@ -90,6 +91,7 @@ const UserEdit = () => {
   if (editData && professionsObject && qualitiesObject) {
     return (
       <div className="container mt-3">
+        <BackHistoryButton />
         <div className="row">
           <div className="col-md-6 offset-md-3 shadow p-4">
             <form className="w-100">
@@ -136,7 +138,7 @@ const UserEdit = () => {
                 defaultValue={valueMultiSelect}
               />
               <Link
-                to={isValid ? '/users' : '#'}
+                to={isValid ? `/users/${id}` : '#'}
                 type="button"
                 className="btn btn-primary w-100"
                 onClick={handleSubmit}
