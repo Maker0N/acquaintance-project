@@ -3,8 +3,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import TableHeader from '../common/Table/tableHeader'
 import TableBody from '../common/Table/tableBody'
-import QualitiesList from './qualities/qualitiesList'
+// import QualitiesList from './qualities/qualitiesList'
 import BookMark from '../common/bookMark'
+import Profession from './profession'
+import Quality from './quality'
 
 const UsersTable = ({
   users,
@@ -23,11 +25,17 @@ const UsersTable = ({
       component(user) {
         const { qualities } = user
         return (
-          <QualitiesList qualities={qualities} />
+          <Quality id={qualities} />
         )
       },
     },
-    profession: { path: 'profession.name', name: 'Профессия' },
+    profession: {
+      name: 'Профессия',
+      component(user) {
+        const { profession } = user
+        return <Profession id={profession} />
+      },
+    },
     completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз' },
     rate: { path: 'rate', name: 'Оценка' },
     bookmark: {

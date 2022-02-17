@@ -5,6 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "^10.4.0",
+    "axios": "^0.26.0",
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "5.1.0",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
@@ -16,6 +18,7 @@
     "react-redux": "^7.2.5",
     "react-router-dom": "5.3.0",
     "react-select": "^5.2.2",
+    "react-toastify": "^8.2.0",
     "redux": "^4.1.1"
   },
   "devDependencies": {
@@ -23,7 +26,7 @@
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-react": "^7.14.5",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.2.3",
     "css-loader": "^6.2.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",

@@ -12,7 +12,7 @@ const Qualities = ({ qualities }) => (
 )
 
 Qualities.propTypes = {
-  it: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+  qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
 }
 
 export default Qualities

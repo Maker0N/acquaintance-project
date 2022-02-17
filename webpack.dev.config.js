@@ -6,10 +6,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 // eslint-disable-next-line import/no-extraneous-dependencies
 // const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+require('babel-polyfill')
 
 const config = {
   devtool: 'source-map',
-  entry: './src/index.jsx',
+  entry: ['babel-polyfill', './src/index.jsx'],
   mode: 'development',
   output: {
     filename: 'js/[name].[contenthash].js',

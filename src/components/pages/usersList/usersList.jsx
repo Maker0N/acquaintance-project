@@ -5,15 +5,16 @@ import Input from '../../common/input'
 import UsersTable from '../../ui/usersTable'
 import Pagination from '../../common/pagination'
 import GroupList from '../../common/groupList'
-import { fetchAll } from '../../../api/fake.api/user.api'
+// import { fetchAll } from '../../../api/fake.api/user.api'
 import api from '../../../api'
 import paginate from '../../../utils/paginate'
 import dinamicSort from '../../../utils/dinamicSort'
+import { useUser } from '../../../hooks/useUsers'
 import '../../../styles/main.css'
 
 const UsersList = () => {
-  const [users, setUsers] = useState([])
-  const [searchUsers, setSearchUsers] = useState([])
+  const { users } = useUser()
+  // const [searchUsers, setSearchUsers] = useState([])
 
   // ----------------data from array-----------------
   // const [professions, setProfessions] = useState([])
@@ -22,7 +23,7 @@ const UsersList = () => {
   const [professionsObject, setProfessionsObject] = useState({})
   const [selectedProf, setSelectedProf] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
-  const [usersWereLoaded, setUsersWereLoaded] = useState(false)
+  // const [usersWereLoaded, setUsersWereLoaded] = useState(false)
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc', downUp: true })
   const [search, setSearch] = useState('')
 
@@ -30,11 +31,6 @@ const UsersList = () => {
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex)
   }
-  useEffect(() => {
-    fetchAll().then((data) => setSearchUsers(data))
-    fetchAll().then((data) => setUsers(data))
-      .then(() => setUsersWereLoaded(true))
-  }, [])
 
   // ----------------data from array-----------------
   // useEffect(() => {
@@ -55,7 +51,8 @@ const UsersList = () => {
   const handleProfessionSelect = (item) => {
     setSelectedProf(item)
     clearSearch()
-    setUsers(searchUsers)
+    // setUsers(searchUsers)
+    console.log(item)
   }
 
   const filteredUsers = Object.keys(selectedProf).length !== 0
@@ -70,18 +67,20 @@ const UsersList = () => {
   }
 
   const handleBookMark = (userId) => {
-    setUsers(users.map((it) => {
-      if (it._id === userId && it.bookmark === false) {
-        return { ...it, bookmark: true }
-      } if (it._id === userId && it.bookmark === true) {
-        return { ...it, bookmark: false }
-      }
-      return it
-    }))
+    // setUsers(users.map((it) => {
+    //   if (it._id === userId && it.bookmark === false) {
+    //     return { ...it, bookmark: true }
+    //   } if (it._id === userId && it.bookmark === true) {
+    //     return { ...it, bookmark: false }
+    //   }
+    //   return it
+    // }))
+    console.log(userId)
   }
 
   const handleDelete = (userId) => {
-    setUsers(users.filter((it) => it._id !== userId))
+    // setUsers(users.filter((it) => it._id !== userId))
+    console.log(userId)
   }
 
   const handleSort = (item) => {
@@ -109,16 +108,16 @@ const UsersList = () => {
 
   const getInput = ({ target }) => {
     setSearch(target.value)
-    setUsers(searchUsers)
-    setUsers((prev) => prev.filter((item) => item.name
-      .toLowerCase()
-      .includes(target.value)))
+    // setUsers(searchUsers)
+    // setUsers((prev) => prev.filter((item) => item.name
+    //   .toLowerCase()
+    //   .includes(target.value)))
     clearFilter()
   }
 
   return (
     <>
-      {usersWereLoaded
+      {users
         ? (
           <SearchStatus
             itemsCount={itemsCount}
@@ -128,7 +127,7 @@ const UsersList = () => {
         )
         : <span>Loading...</span>}
       <div className="d-flex m-2 h-10">
-        {users && usersWereLoaded
+        {users
           ? (
             <div>
               <GroupList
