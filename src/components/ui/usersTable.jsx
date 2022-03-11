@@ -6,7 +6,7 @@ import TableBody from '../common/Table/tableBody'
 // import QualitiesList from './qualities/qualitiesList'
 import BookMark from '../common/bookMark'
 import Profession from './profession'
-import Quality from './quality'
+import Quality from './qualities/quality'
 
 const UsersTable = ({
   users,
@@ -100,8 +100,8 @@ UsersTable.propTypes = {
   users: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     name: PropTypes.string,
-    profession: PropTypes.objectOf(PropTypes.string),
-    qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    profession: PropTypes.string,
+    qualities: PropTypes.arrayOf(PropTypes.string),
     completedMeetings: PropTypes.number,
     rate: PropTypes.number,
     bookmark: PropTypes.bool,
@@ -109,8 +109,8 @@ UsersTable.propTypes = {
   usersCrop: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     name: PropTypes.string,
-    profession: PropTypes.objectOf(PropTypes.string),
-    qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    profession: PropTypes.string,
+    qualities: PropTypes.arrayOf(PropTypes.string),
     completedMeetings: PropTypes.number,
     rate: PropTypes.number,
     bookmark: PropTypes.bool,

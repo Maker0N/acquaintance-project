@@ -12,11 +12,10 @@ const UserProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [err, setErr] = useState(null)
 
-  // console.log(users)
-
   function errorCatcher(error) {
     const { message } = error.response.data
     setErr(message)
+    setIsLoading(false)
   }
 
   async function getUsers() {

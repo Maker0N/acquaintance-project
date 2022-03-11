@@ -8,7 +8,7 @@ const ProfessionContext = React.createContext()
 
 export const useProfessions = () => useContext(ProfessionContext)
 
-const ProfessionProvider = ({ children }) => {
+export const ProfessionProvider = ({ children }) => {
   const [professions, setProfessions] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [err, setErr] = useState(null)
@@ -53,5 +53,3 @@ const ProfessionProvider = ({ children }) => {
 ProfessionProvider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
 }
-
-export default ProfessionProvider

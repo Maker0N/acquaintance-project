@@ -1,14 +1,15 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
 import qualityService from '../services/quality.service'
 
-const QualityContext = React.createContext()
+const QualitiesContext = React.createContext()
 
-export const useQuality = () => useContext(QualityContext)
+export const useQualities = () => useContext(QualitiesContext)
 
-const QualityProvider = ({ children }) => {
+export const QualitiesProvider = ({ children }) => {
   const [qualities, setQualities] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [err, setErr] = useState(null)
@@ -25,7 +26,7 @@ const QualityProvider = ({ children }) => {
     }
   }, [err])
 
-  async function getQualitiesList() {
+  const getQualities = async () => {
     try {
       const { content } = await qualityService.get()
       setQualities(content)
@@ -36,7 +37,7 @@ const QualityProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    getQualitiesList()
+    getQualities()
   }, [])
 
   function getQuality(id) {
@@ -53,14 +54,12 @@ const QualityProvider = ({ children }) => {
   }
 
   return (
-    <QualityContext.Provider value={{ isLoading, getQuality }}>
+    <QualitiesContext.Provider value={{ isLoading, getQuality, qualities }}>
       {children}
-    </QualityContext.Provider>
+    </QualitiesContext.Provider>
   )
 }
 
-QualityProvider.propTypes = {
+QualitiesProvider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
 }
-
-export default QualityProvider

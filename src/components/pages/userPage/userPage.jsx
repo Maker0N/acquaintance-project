@@ -11,6 +11,7 @@ const UserPage = () => {
   const { id } = useParams()
   const [user, setUser] = useState(null)
   const [users, setUsers] = useState()
+  console.log(id, user, users)
 
   useEffect(() => {
     getById(id).then((data) => setUser(data))

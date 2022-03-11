@@ -1,9 +1,9 @@
 import httpService from './http.service'
 
-const userEndPoint = 'user/'
+const userEndPoint = 'users/'
 
 const userService = {
-  async get() {
+  get: async () => {
     const { data } = await httpService.get(userEndPoint)
     return data
   },

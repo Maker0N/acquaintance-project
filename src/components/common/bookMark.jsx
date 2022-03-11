@@ -24,8 +24,12 @@ const BookMark = ({ bookmark }) => {
   )
 }
 
+BookMark.defaultProps = {
+  bookmark: undefined,
+}
+
 BookMark.propTypes = {
-  bookmark: PropTypes.bool.isRequired,
+  bookmark: PropTypes.bool,
 }
 
 export default BookMark

@@ -1,11 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import Qualities from './qualities'
+import Quality from './quality'
 
-const QualitiesList = ({ qualities }) => <Qualities qualities={qualities} />
-
-QualitiesList.propTypes = {
-  qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
-}
+const QualitiesList = () => <Quality />
 
 export default QualitiesList

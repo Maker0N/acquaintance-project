@@ -58,8 +58,8 @@ TableBody.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     name: PropTypes.string,
-    profession: PropTypes.objectOf(PropTypes.string),
-    qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    profession: PropTypes.string,
+    qualities: PropTypes.arrayOf(PropTypes.string),
     completedMeetings: PropTypes.number,
     rate: PropTypes.number,
     bookmark: PropTypes.bool,
@@ -71,8 +71,8 @@ TableBody.propTypes = {
   usersCrop: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     name: PropTypes.string,
-    profession: PropTypes.objectOf(PropTypes.string),
-    qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    profession: PropTypes.string,
+    qualities: PropTypes.arrayOf(PropTypes.string),
     completedMeetings: PropTypes.number,
     rate: PropTypes.number,
     bookmark: PropTypes.bool,

@@ -1,18 +1,45 @@
+/* eslint-disable no-param-reassign */
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import config from '../config.json'
+import configFile from '../config.json'
 
-axios.defaults.baseURL = config.apiEndPoint
+axios.defaults.baseURL = configFile.apiEndPoint
 
-axios.interceptors.response.use(((res) => res), (error) => {
-  const expectedErrors = error.response
+axios.interceptors.request.use(
+  (config) => {
+    if (configFile.isFirebase) {
+      const containSlash = /\/$/gi.test(config.url)
+      config.url = `${containSlash ? config.url.slice(0, -1) : config.url}.json`
+    }
+    return config
+  },
+  (error) => Promise.reject(error),
+)
+
+function transformData(data) {
+  return data
+    ? Object.keys(data).map((key) => ({
+      ...data[key],
+    }))
+    : []
+}
+
+axios.interceptors.response.use(
+  (res) => {
+    if (configFile.isFirebase) {
+      res.data = { content: transformData(res.data) }
+    }
+    return res
+  }, (error) => {
+    const expectedErrors = error.response
     && error.response.status >= 400
     && error.response.status < 500
-  if (!expectedErrors) {
-    toast.error('Somthing was wrong! Try it later!')
-  }
-  return Promise.reject(error)
-})
+    if (!expectedErrors) {
+      toast.error('Somthing was wrong! Try it later!')
+    }
+    return Promise.reject(error)
+  },
+)
 
 const httpService = {
   get: axios.get,
