@@ -3,20 +3,24 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import TextField from '../common/form/textField'
 import CheckBoxField from '../common/form/checkBoxField'
 import validator from '../../utils/validator'
+import { useAuth } from '../../hooks/useAuth'
 
 const LoginForm = () => {
-  const [data, setData] = useState({ login: '', password: '', stayOn: false })
+  const history = useHistory()
+  const [data, setData] = useState({ email: '', password: '', stayOn: false })
   const [errors, setErrors] = useState({})
+  const { signIn } = useAuth()
 
   const handleChange = (target) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }))
   }
 
   const validatorConfig = {
-    login: {
+    email: {
       isRequired: { message: 'Login is required!' },
       isEmail: { message: 'Email is not corrected!' },
     },
@@ -38,21 +42,27 @@ const LoginForm = () => {
     validate()
   }, [data])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const isValidate = validate()
     if (!isValidate) return
+    try {
+      await signIn(data)
+      history.push('/')
+    } catch (error) {
+      setErrors(error)
+    }
   }
 
   return (
     <form className="w-100" onSubmit={(e) => handleSubmit(e)}>
       <TextField
         label="Login (email)"
-        name="login"
+        name="email"
         type="text"
-        value={data.login}
+        value={data.email}
         onChange={(target) => handleChange(target)}
-        error={errors.login}
+        error={errors.email}
       />
       <TextField
         label="Password"

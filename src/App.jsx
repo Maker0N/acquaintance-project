@@ -9,24 +9,27 @@ import User from './components/pages/userPage/userPage'
 import UserEdit from './components/pages/userPage/userEdit'
 import { QualitiesProvider } from './hooks/useQualities'
 import { ProfessionProvider } from './hooks/useProfessions'
+import AuthProvider from './hooks/useAuth'
 
 const App = () => (
   <>
-    <Header />
-    <QualitiesProvider>
-      <ProfessionProvider>
-        <Switch>
-          <Route path="/login/type?" component={Login} />
-          <Route path="/login" component={Login} />
-          <Route exact path="/users" component={Users} />
-          <Route path="/users/:id/edit" component={UserEdit} />
-          <Route path="/users/:id" component={User} />
-          <Route path="/users/user" component={Login} />
-          <Route exact path="/" component={Main} />
-          <Redirect to="/" />
-        </Switch>
-      </ProfessionProvider>
-    </QualitiesProvider>
+    <AuthProvider>
+      <Header />
+      <QualitiesProvider>
+        <ProfessionProvider>
+          <Switch>
+            <Route path="/login/type?" component={Login} />
+            <Route path="/login" component={Login} />
+            <Route exact path="/users" component={Users} />
+            <Route path="/users/:id/edit" component={UserEdit} />
+            <Route path="/users/:id" component={User} />
+            <Route path="/users/user" component={Login} />
+            <Route exact path="/" component={Main} />
+            <Redirect to="/" />
+          </Switch>
+        </ProfessionProvider>
+      </QualitiesProvider>
+    </AuthProvider>
     <ToastContainer />
   </>
 )

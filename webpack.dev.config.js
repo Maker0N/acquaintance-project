@@ -1,5 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable global-require */
-const { resolve } = require('path');
+const { resolve } = require('path')
+const webpack = require('webpack')
 // eslint-disable-next-line import/no-extraneous-dependencies
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -7,6 +9,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 require('babel-polyfill')
+const dotenv = require('dotenv').config()
+
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 const config = {
   devtool: 'source-map',
@@ -102,6 +107,10 @@ const config = {
       ],
     }),
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(dotenv.parsed),
+      'process.env.NODE_ENV': JSON.stringify(isDevelopment ? 'development' : 'production'),
+    }),
   ],
 }
 

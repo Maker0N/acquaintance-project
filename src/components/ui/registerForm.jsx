@@ -1,35 +1,37 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-useless-return */
 /* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import TextField from '../common/form/textField'
 import SelectField from '../common/form/selectField'
 import RadioField from '../common/form/radioField'
 import MultiSelectField from '../common/form/multiSelectField'
 import CheckBoxField from '../common/form/checkBoxField'
 import validator from '../../utils/validator'
-import api from '../../api'
+import { useQualities } from '../../hooks/useQualities'
+import { useProfessions } from '../../hooks/useProfessions'
+import { useAuth } from '../../hooks/useAuth'
 
 const RegisterForm = () => {
+  const history = useHistory()
   const [data, setData] = useState({
-    register: '', password: '', profession: '', sex: 'male', qualities: [], licence: false,
+    email: '', password: '', profession: '', sex: 'male', qualities: [], licence: false,
   })
-  const [professionsObject, setProfessionsObject] = useState({})
-  const [qualitiesObject, setQualitiesObject] = useState({})
-  const [errors, setErrors] = useState({})
+  const { signUp } = useAuth()
+  const { professions } = useProfessions()
+  const professionsList = professions.map((prof) => ({ label: prof.name, value: prof._id }))
+  const { qualities } = useQualities()
+  const qualitiesList = qualities.map((qual) => ({ label: qual.name, value: qual._id }))
 
-  useEffect(() => {
-    api.professionsObject.fetchAll()
-      .then((data) => setProfessionsObject(data))
-    api.qualities.fetchAll()
-      .then((data) => setQualitiesObject(data))
-  }, [])
+  const [errors, setErrors] = useState({})
 
   const handleChange = (target) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }))
   }
 
   const validatorConfig = {
-    register: {
+    email: {
       isRequired: { message: 'Login is required!' },
       isEmail: { message: 'Email is not corrected!' },
     },
@@ -61,21 +63,31 @@ const RegisterForm = () => {
     validate()
   }, [data])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const isValidate = validate()
     if (!isValidate) return
+    const newData = {
+      ...data,
+      qualities: data.qualities.map((qual) => qual.value),
+    }
+    try {
+      await signUp(newData)
+      history.push('/')
+    } catch (error) {
+      setErrors(error)
+    }
   }
 
   return (
     <form className="w-100" onSubmit={(e) => handleSubmit(e)}>
       <TextField
-        label="Register (email)"
-        name="register"
+        label="email (email)"
+        name="email"
         type="text"
-        value={data.register}
+        value={data.email}
         onChange={(target) => handleChange(target)}
-        error={errors.register}
+        error={errors.email}
       />
       <TextField
         label="Password"
@@ -90,7 +102,7 @@ const RegisterForm = () => {
         defaultOption="Choose..."
         label="Your profession"
         value={data.profession}
-        option={professionsObject}
+        option={professionsList}
         onChange={handleChange}
         error={errors.profession}
       />
@@ -106,7 +118,7 @@ const RegisterForm = () => {
         label="Your sex"
       />
       <MultiSelectField
-        options={qualitiesObject}
+        options={qualitiesList}
         onChange={handleChange}
         name="qualities"
         label="Your qualities"
