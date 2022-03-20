@@ -16,7 +16,7 @@ import { useAuth } from '../../hooks/useAuth'
 const RegisterForm = () => {
   const history = useHistory()
   const [data, setData] = useState({
-    email: '', password: '', profession: '', sex: 'male', qualities: [], licence: false,
+    email: '', name: '', password: '', profession: '', sex: 'male', qualities: [], licence: false,
   })
   const { signUp } = useAuth()
   const { professions } = useProfessions()
@@ -34,6 +34,10 @@ const RegisterForm = () => {
     email: {
       isRequired: { message: 'Login is required!' },
       isEmail: { message: 'Email is not corrected!' },
+    },
+    name: {
+      isRequired: { message: 'Name is required!' },
+      isMin: { message: 'Name must not be less than 3 characters!', value: 3 },
     },
     password: {
       isRequired: { message: 'Password is required!' },
@@ -82,12 +86,20 @@ const RegisterForm = () => {
   return (
     <form className="w-100" onSubmit={(e) => handleSubmit(e)}>
       <TextField
-        label="email (email)"
+        label="Login (email)"
         name="email"
         type="text"
         value={data.email}
         onChange={(target) => handleChange(target)}
         error={errors.email}
+      />
+      <TextField
+        label="Name"
+        name="name"
+        type="text"
+        value={data.name}
+        onChange={(target) => handleChange(target)}
+        error={errors.name}
       />
       <TextField
         label="Password"

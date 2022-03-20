@@ -41,16 +41,7 @@ export const QualitiesProvider = ({ children }) => {
   }, [])
 
   function getQuality(id) {
-    let userQuality = []
-
-    for (let i = 0; i < id.length; i += 1) {
-      const qual = qualities
-        .reduce((acc, rec) => (rec._id === id[i]
-          ? { ...acc, ...rec }
-          : acc), [])
-      userQuality = [...userQuality, qual]
-    }
-    return userQuality
+    return qualities.find((q) => q._id === id)
   }
 
   return (

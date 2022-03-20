@@ -5,30 +5,36 @@ import Header from './components/ui/header'
 import Login from './layouts/login'
 import Main from './layouts/main'
 import Users from './layouts/users'
-import User from './components/pages/userPage/userPage'
+import LogOut from './layouts/logOut'
+// import UserPage from './components/pages/userPage/userPage'
 import UserEdit from './components/pages/userPage/userEdit'
 import { QualitiesProvider } from './hooks/useQualities'
 import { ProfessionProvider } from './hooks/useProfessions'
 import AuthProvider from './hooks/useAuth'
+import ProtectedRoute from './components/common/protectedRote'
+import UserProvider from './hooks/useUsers'
 
 const App = () => (
   <>
     <AuthProvider>
       <Header />
-      <QualitiesProvider>
-        <ProfessionProvider>
-          <Switch>
-            <Route path="/login/type?" component={Login} />
-            <Route path="/login" component={Login} />
-            <Route exact path="/users" component={Users} />
-            <Route path="/users/:id/edit" component={UserEdit} />
-            <Route path="/users/:id" component={User} />
-            <Route path="/users/user" component={Login} />
-            <Route exact path="/" component={Main} />
-            <Redirect to="/" />
-          </Switch>
-        </ProfessionProvider>
-      </QualitiesProvider>
+      <UserProvider>
+        <QualitiesProvider>
+          <ProfessionProvider>
+            <Switch>
+              <Route path="/login/type?" component={Login} />
+              <Route path="/login" component={Login} />
+              <Route path="/logout" component={LogOut} />
+              <Route path="/users/:id/edit" component={UserEdit} />
+              {/* <Route path="/users/:id" component={UserPage} /> */}
+              <ProtectedRoute path="/users/:userId?" component={Users} />
+              <Route path="/users/user" component={Login} />
+              <Route exact path="/" component={Main} />
+              <Redirect to="/" />
+            </Switch>
+          </ProfessionProvider>
+        </QualitiesProvider>
+      </UserProvider>
     </AuthProvider>
     <ToastContainer />
   </>

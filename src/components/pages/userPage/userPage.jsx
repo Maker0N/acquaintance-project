@@ -1,55 +1,51 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { getById, fetchAll } from '../../../api/fake.api/user.api'
+import React from 'react'
+import PropTypes from 'prop-types';
 import UserCard from '../../ui/userCard'
 import QualitiesCard from '../../ui/qualitiesCard'
 import MeetingsCard from '../../ui/meetingsCard'
 import Comments from '../../ui/comments'
+import { useUser } from '../../../hooks/useUsers'
+import { CommentsProvider } from '../../../hooks/useComments'
 
-const UserPage = () => {
-  const { id } = useParams()
-  const [user, setUser] = useState(null)
-  const [users, setUsers] = useState()
-  console.log(id, user, users)
+const UserPage = ({ userId }) => {
+  const { getUserById } = useUser()
+  const user = getUserById(userId)
 
-  useEffect(() => {
-    getById(id).then((data) => setUser(data))
-    fetchAll().then((data) => setUsers(data))
-  }, [])
+  const editURL = `/users/${userId}/edit`
 
-  const editURL = `/users/${id}/edit`
-
-  let usersForOption
-  if (users) {
-    usersForOption = users.map((it) => ({ name: it.name, value: it._id }))
-  }
-
-  if (user && users) {
+  if (user) {
     return (
       <div className="container">
         <div className="row gutters-sm">
           <div className="col-md-4 mb-3">
             <UserCard
+              id={user._id}
               name={user.name}
-              profession={user.profession.name}
+              professionId={user.profession}
               rate={user.rate}
               editURL={editURL}
+              image={user.image}
             />
             <QualitiesCard qualities={user.qualities} />
             <MeetingsCard completedMeetings={user.completedMeetings} />
           </div>
           <div className="col-md-8">
-            <Comments
-              option={usersForOption}
-              pageId={id}
-            />
+            <CommentsProvider>
+              <Comments
+                pageId={userId}
+              />
+            </CommentsProvider>
           </div>
         </div>
       </div>
     )
   }
   return <div>LOADING...</div>
+}
+
+UserPage.propTypes = {
+  userId: PropTypes.string.isRequired,
 }
 
 export default UserPage

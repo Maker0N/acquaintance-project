@@ -6,12 +6,11 @@ import TableBody from '../common/Table/tableBody'
 // import QualitiesList from './qualities/qualitiesList'
 import BookMark from '../common/bookMark'
 import Profession from './profession'
-import Quality from './qualities/quality'
+import QualitiesList from './qualities/qualitiesList'
 
 const UsersTable = ({
   users,
   usersCrop,
-  handleDelete,
   handleBookMark,
   handlePageChange,
   currentPage,
@@ -25,7 +24,7 @@ const UsersTable = ({
       component(user) {
         const { qualities } = user
         return (
-          <Quality id={qualities} />
+          <QualitiesList qualitiesId={qualities} />
         )
       },
     },
@@ -58,25 +57,6 @@ const UsersTable = ({
         )
       },
     },
-    delete: {
-      name: 'Удалить',
-      component(user, current, crop, pageChange) {
-        return (
-          <button
-            className="btn btn-danger"
-            type="button"
-            onClick={() => {
-              handleDelete(user._id)
-              if (current !== 1 && crop.length === 1) {
-                pageChange((current - 1))
-              }
-            }}
-          >
-            Удалить
-          </button>
-        )
-      },
-    },
   }
 
   return (
@@ -87,7 +67,6 @@ const UsersTable = ({
         data: usersCrop,
         usersCrop,
         handleBookMark,
-        handleDelete,
         handlePageChange,
         currentPage,
       }}
@@ -115,7 +94,6 @@ UsersTable.propTypes = {
     rate: PropTypes.number,
     bookmark: PropTypes.bool,
   })).isRequired,
-  handleDelete: PropTypes.func.isRequired,
   handleBookMark: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,

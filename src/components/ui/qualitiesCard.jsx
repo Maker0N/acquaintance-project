@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react'
 import PropTypes from 'prop-types'
+import QualitiesList from './qualities/qualitiesList'
 
 const QualitiesCard = ({ qualities }) => (
   <div className="card mb-3">
@@ -8,19 +9,19 @@ const QualitiesCard = ({ qualities }) => (
       <h5 className="card-title">
         <span>Qualities</span>
       </h5>
-      <div className="card-text">
-        {qualities.map((it) => {
-          const classBadgeColor = `card-text badge bg-${it.color} mx-1`
-          return (
-            <p className={classBadgeColor} key={it._id}>{it.name}</p>)
-        })}
-      </div>
+      <p className="card-text">
+        <QualitiesList qualitiesId={qualities} />
+      </p>
     </div>
   </div>
 )
 
+QualitiesCard.defaultProps = {
+  qualities: undefined,
+}
+
 QualitiesCard.propTypes = {
-  qualities: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  qualities: PropTypes.arrayOf(PropTypes.string),
 }
 
 export default QualitiesCard

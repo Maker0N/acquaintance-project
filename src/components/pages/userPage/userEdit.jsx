@@ -8,57 +8,46 @@ import TextField from '../../common/form/textField'
 import MultiSelectField from '../../common/form/multiSelectField'
 import RadioField from '../../common/form/radioField'
 import SelectField from '../../common/form/selectField'
-import { update, getById } from '../../../api/fake.api/user.api'
-import api from '../../../api'
 import validator from '../../../utils/validator'
+import { useAuth } from '../../../hooks/useAuth'
+import { useProfessions } from '../../../hooks/useProfessions'
+import { useQualities } from '../../../hooks/useQualities'
 
 const UserEdit = () => {
   const { id } = useParams()
   const [editData, setEditData] = useState()
-  const [professionsObject, setProfessionsObject] = useState()
-  const [qualitiesObject, setQualitiesObject] = useState()
   const [errors, setErrors] = useState({})
 
+  const { currentUser, update } = useAuth()
+  const { professions } = useProfessions()
+  const professionsList = professions.map((prof) => ({ label: prof.name, value: prof._id }))
+  const { qualities } = useQualities()
+  const qualitiesList = qualities.map((qual) => ({ label: qual.name, value: qual._id }))
+
   useEffect(() => {
-    getById(id).then((data) => setEditData(data))
-    api.professionsObject.fetchAll()
-      .then((data) => setProfessionsObject(data))
-    api.qualities.fetchAll()
-      .then((data) => setQualitiesObject(data))
+    setEditData(currentUser)
   }, [])
 
   const handleChange = (target) => {
-    setEditData((prev) => ({ ...prev, [target.name]: target.value }))
-  }
-
-  const handleProfession = (target) => {
-    const [choisenProfession] = Object.keys(professionsObject)
-      .filter((prof) => professionsObject[prof]._id === target.value)
-    setEditData((prev) => ({
-      ...prev,
-      profession: {
-        _id: target.value, name: professionsObject[choisenProfession].name,
-      },
-    }))
-  }
-
-  const handleQualities = (target) => {
-    const newQualities = target.value
-      .map((quality) => {
-        const [colors] = Object.keys(qualitiesObject)
-          .filter((item) => qualitiesObject[item]._id === quality.value)
-        return ({
-          _id: quality.value,
-          name: quality.label,
-          color: qualitiesObject[colors].color,
-        })
-      })
-    setEditData((prev) => ({ ...prev, qualities: newQualities }))
+    if (target.name === 'qualities') {
+      const qualityId = target.value.map((id) => id.value)
+      setEditData((prev) => ({ ...prev, [target.name]: qualityId }))
+    } else {
+      setEditData((prev) => ({ ...prev, [target.name]: target.value }))
+    }
   }
 
   let valueMultiSelect
-  if (editData) {
-    valueMultiSelect = editData.qualities
+  if (qualities) {
+    const qual = qualities.filter((q) => {
+      for (let i = 0; i < currentUser.qualities.length; i += 1) {
+        if (currentUser.qualities[i] === q._id) {
+          return q
+        }
+      }
+      return qual
+    })
+    valueMultiSelect = qual
       .map((quality) => ({ label: quality.name, value: quality._id }))
   }
 
@@ -72,7 +61,7 @@ const UserEdit = () => {
     },
   }
   const validate = () => {
-    const errors = validator(editData, validatorConfig)
+    const errors = validator(currentUser, validatorConfig)
     setErrors(errors)
     return Object.keys(errors).length === 0
   }
@@ -80,15 +69,15 @@ const UserEdit = () => {
   const isValid = Object.keys(errors).length === 0
   useEffect(() => {
     validate()
-  }, [editData])
+  }, [currentUser])
 
   const handleSubmit = () => {
     const isValidate = validate()
     if (!isValidate) return
-    update(id, editData)
+    update(editData)
   }
 
-  if (editData && professionsObject && qualitiesObject) {
+  if (editData && currentUser._id === id) {
     return (
       <div className="container mt-3">
         <BackHistoryButton />
@@ -115,9 +104,9 @@ const UserEdit = () => {
                 label="Your profession"
                 name="profession"
                 defaultOption="Choose..."
-                onChange={handleProfession}
-                option={professionsObject}
-                value={editData.profession._id}
+                onChange={handleChange}
+                option={professionsList}
+                value={editData.profession}
               />
               <RadioField
                 label="Your sex"
@@ -133,8 +122,8 @@ const UserEdit = () => {
               <MultiSelectField
                 label="Your qualities"
                 name="qualities"
-                onChange={handleQualities}
-                options={qualitiesObject}
+                onChange={handleChange}
+                options={qualitiesList}
                 defaultValue={valueMultiSelect}
               />
               <Link

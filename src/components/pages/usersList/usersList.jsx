@@ -1,26 +1,27 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import SearchStatus from '../../ui/searchStatus'
 import Input from '../../common/input'
 import UsersTable from '../../ui/usersTable'
 import Pagination from '../../common/pagination'
 import GroupList from '../../common/groupList'
-// import { fetchAll } from '../../../api/fake.api/user.api'
-import api from '../../../api'
 import paginate from '../../../utils/paginate'
 import dinamicSort from '../../../utils/dinamicSort'
 import { useUser } from '../../../hooks/useUsers'
+import { useProfessions } from '../../../hooks/useProfessions'
+import { useAuth } from '../../../hooks/useAuth'
 import '../../../styles/main.css'
 
 const UsersList = () => {
   const { users } = useUser()
+  const { professions } = useProfessions()
+  const { currentUser } = useAuth()
   // const [searchUsers, setSearchUsers] = useState([])
 
   // ----------------data from array-----------------
   // const [professions, setProfessions] = useState([])
 
   // ----------------data from object-----------------
-  const [professionsObject, setProfessionsObject] = useState({})
   const [selectedProf, setSelectedProf] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
   // const [usersWereLoaded, setUsersWereLoaded] = useState(false)
@@ -39,11 +40,6 @@ const UsersList = () => {
   // }, [])
 
   // ----------------data from object-----------------
-  useEffect(() => {
-    api.professionsObject.fetchAll()
-      .then((data) => setProfessionsObject(data))
-  }, [])
-
   const clearSearch = () => {
     setSearch('')
   }
@@ -52,12 +48,16 @@ const UsersList = () => {
     setSelectedProf(item)
     clearSearch()
     // setUsers(searchUsers)
-    console.log(item)
   }
 
-  const filteredUsers = Object.keys(selectedProf).length !== 0
-    ? users.filter((it) => it.profession.name === selectedProf.name)
-    : users
+  function filterUser(data) {
+    const filteredUsers = Object.keys(selectedProf).length !== 0
+      ? data.filter((it) => it.profession.name === selectedProf.name)
+      : data
+    return filteredUsers.filter((u) => u._id !== currentUser._id)
+  }
+  const filteredUsers = filterUser(users)
+
   const itemsCount = users.length
   const sortedUsers = filteredUsers.sort(dinamicSort(sortBy.path, sortBy.order))
   const usersCrop = paginate(sortedUsers, currentPage, pageSize)
@@ -75,11 +75,6 @@ const UsersList = () => {
     //   }
     //   return it
     // }))
-    console.log(userId)
-  }
-
-  const handleDelete = (userId) => {
-    // setUsers(users.filter((it) => it._id !== userId))
     console.log(userId)
   }
 
@@ -121,8 +116,7 @@ const UsersList = () => {
         ? (
           <SearchStatus
             itemsCount={itemsCount}
-            renderPhrase={(number) => renderPhrase(number)}
-            handleDelete={(userId) => handleDelete(userId)}
+            renderPhrase={(number) => renderPhrase(number - 1)}
           />
         )
         : <span>Loading...</span>}
@@ -134,7 +128,7 @@ const UsersList = () => {
                 // ----------------data from array-----------------
                 // professions={professions}
                 // ----------------data from object-----------------
-                professions={professionsObject}
+                professions={professions}
                 onItemSelect={(item) => handleProfessionSelect(item)}
                 selectedItem={selectedProf}
                 handlePageChange={handlePageChange}
@@ -159,7 +153,6 @@ const UsersList = () => {
           <UsersTable
             users={users}
             usersCrop={usersCrop}
-            handleDelete={(userId) => handleDelete(userId)}
             handleBookMark={(userId) => handleBookMark(userId)}
             handlePageChange={handlePageChange}
             currentPage={currentPage}

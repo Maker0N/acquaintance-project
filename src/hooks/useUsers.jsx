@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
@@ -39,8 +40,12 @@ const UserProvider = ({ children }) => {
     }
   }, [err])
 
+  function getUserById(userId) {
+    return users.find((u) => u._id === userId)
+  }
+
   return (
-    <UserContext.Provider value={{ users }}>
+    <UserContext.Provider value={{ users, getUserById }}>
       {!isLoading ? children : <h1>Loading...</h1>}
     </UserContext.Provider>
   )

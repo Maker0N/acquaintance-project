@@ -1,48 +1,22 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'
+import React from 'react';
 import CommentsList from '../common/comments/commentsList'
 import AddCommentForm from '../common/comments/addCommentForm'
-import { add, fetchCommentsForUser, remove } from '../../api/fake.api/comments.api'
+import { useComments } from '../../hooks/useComments';
 
-const Comments = ({
-  option, pageId,
-}) => {
-  const [comments, setComments] = useState([])
-  const [commentObj, setCommentObj] = useState({
-    _id: '',
-    userId: '',
-    pageId: '',
-    content: '',
-  })
-
-  useEffect(() => {
-    fetchCommentsForUser(pageId).then((data) => setComments(data))
-  }, [])
-
-  const clearNewComment = () => {
-    setCommentObj({
-      _id: '',
-      userId: '',
-      pageId: '',
-      content: '',
-    })
-  }
-
-  const handleChangeSelect = (target) => {
-    setCommentObj((prev) => ({ ...prev, pageId, userId: target.value }))
-  }
-  const handleChangeTextArea = (target) => {
-    setCommentObj((prev) => ({ ...prev, content: target }))
-  }
+const Comments = () => {
+  const { createComment, comments, removeComment } = useComments()
 
   const handleRemove = (id) => {
-    remove(id).then((commentId) => setComments(comments.filter((x) => x._id !== commentId)))
+    removeComment(id)
   }
 
-  const handleSubmit = (objComment) => {
-    add(objComment).then((data) => setComments([...comments, data]))
-    clearNewComment()
+  const handleSubmit = (data) => {
+    createComment(data)
+  }
+
+  if (comments.length !== 0) {
+    comments.sort((a, b) => b.created_at - a.created_at)
   }
 
   return (
@@ -51,12 +25,7 @@ const Comments = ({
         {' '}
         <div className="card-body">
           <AddCommentForm
-            option={option}
-            pageId={pageId}
-            commentObj={commentObj}
             onSubmit={handleSubmit}
-            onChangeSelect={handleChangeSelect}
-            onChangeTextArea={handleChangeTextArea}
           />
         </div>
       </div>
@@ -69,11 +38,6 @@ const Comments = ({
       </div>
     </>
   )
-}
-
-Comments.propTypes = {
-  option: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  pageId: PropTypes.string.isRequired,
 }
 
 export default Comments
