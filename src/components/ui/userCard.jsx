@@ -1,18 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { useAuth } from '../../hooks/useAuth'
+import { getCurrentUserId } from '../../store/users'
 
 const UserCard = ({
   id, name, profession, rate, editURL, image,
 }) => {
-  const { currentUser } = useAuth()
+  const currentUserId = useSelector(getCurrentUserId())
   return (
     <div className="card mb-3">
       <div className="card-body">
-        {currentUser._id === id
+        {currentUserId === id
           && (
           <Link to={editURL}>
             <button type="button" className="position-absolute top-0 end-0 btn btn-light btn-sm">

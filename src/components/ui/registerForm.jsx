@@ -2,26 +2,25 @@
 /* eslint-disable no-useless-return */
 /* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import TextField from '../common/form/textField'
 import SelectField from '../common/form/selectField'
 import RadioField from '../common/form/radioField'
 import MultiSelectField from '../common/form/multiSelectField'
 import CheckBoxField from '../common/form/checkBoxField'
 import validator from '../../utils/validator'
-import { useQualities } from '../../hooks/useQualities'
-import { useProfessions } from '../../hooks/useProfessions'
-import { useAuth } from '../../hooks/useAuth'
+import { getQualities } from '../../store/qualities'
+import { getProfessions } from '../../store/professions'
+import { signUp } from '../../store/users'
 
 const RegisterForm = () => {
-  const history = useHistory()
+  const dispatch = useDispatch()
   const [data, setData] = useState({
     email: '', name: '', password: '', profession: '', sex: 'male', qualities: [], licence: false,
   })
-  const { signUp } = useAuth()
-  const { professions } = useProfessions()
+  const professions = useSelector(getProfessions())
   const professionsList = professions.map((prof) => ({ label: prof.name, value: prof._id }))
-  const { qualities } = useQualities()
+  const qualities = useSelector(getQualities())
   const qualitiesList = qualities.map((qual) => ({ label: qual.name, value: qual._id }))
 
   const [errors, setErrors] = useState({})
@@ -67,7 +66,7 @@ const RegisterForm = () => {
     validate()
   }, [data])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     const isValidate = validate()
     if (!isValidate) return
@@ -75,12 +74,7 @@ const RegisterForm = () => {
       ...data,
       qualities: data.qualities.map((qual) => qual.value),
     }
-    try {
-      await signUp(newData)
-      history.push('/')
-    } catch (error) {
-      setErrors(error)
-    }
+    dispatch(signUp(newData))
   }
 
   return (

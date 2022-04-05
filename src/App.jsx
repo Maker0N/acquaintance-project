@@ -8,34 +8,25 @@ import Users from './layouts/users'
 import LogOut from './layouts/logOut'
 // import UserPage from './components/pages/userPage/userPage'
 import UserEdit from './components/pages/userPage/userEdit'
-import { QualitiesProvider } from './hooks/useQualities'
-import { ProfessionProvider } from './hooks/useProfessions'
-import AuthProvider from './hooks/useAuth'
 import ProtectedRoute from './components/common/protectedRote'
-import UserProvider from './hooks/useUsers'
+import AppLoader from './components/ui/hoc/appLoader'
 
 const App = () => (
   <>
-    <AuthProvider>
+    <AppLoader>
       <Header />
-      <UserProvider>
-        <QualitiesProvider>
-          <ProfessionProvider>
-            <Switch>
-              <Route path="/login/type?" component={Login} />
-              <Route path="/login" component={Login} />
-              <Route path="/logout" component={LogOut} />
-              <Route path="/users/:id/edit" component={UserEdit} />
-              {/* <Route path="/users/:id" component={UserPage} /> */}
-              <ProtectedRoute path="/users/:userId?" component={Users} />
-              <Route path="/users/user" component={Login} />
-              <Route exact path="/" component={Main} />
-              <Redirect to="/" />
-            </Switch>
-          </ProfessionProvider>
-        </QualitiesProvider>
-      </UserProvider>
-    </AuthProvider>
+      <Switch>
+        <Route path="/login/type?" component={Login} />
+        <Route path="/login" component={Login} />
+        <Route path="/logout" component={LogOut} />
+        <Route path="/users/:id/edit" component={UserEdit} />
+        {/* <Route path="/users/:id" component={UserPage} /> */}
+        <ProtectedRoute path="/users/:userId?" component={Users} />
+        <Route path="/users/user" component={Login} />
+        <Route exact path="/" component={Main} />
+        <Redirect to="/" />
+      </Switch>
+    </AppLoader>
     <ToastContainer />
   </>
 )

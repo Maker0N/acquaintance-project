@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
   const history = useHistory()
 
   function errorCatcher(error) {
-    const { message } = error.response.data
+    const { message } = error.response.data.error
     setErr(message)
   }
 

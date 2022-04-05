@@ -1,17 +1,25 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import Login from './login'
 import UserPage from '../components/pages/userPage/userPage'
 import UsersList from '../components/pages/usersList/usersList'
-import UserProvider from '../hooks/useUsers'
+import UsersLoader from '../components/ui/hoc/usersLoader'
+import { getDataStatus } from '../store/users'
 
 const Users = () => {
-  const params = useParams();
-  const { userId } = params;
+  const params = useParams()
+  const { userId } = params
+  const dataStatus = useSelector(getDataStatus())
+
+  if (!dataStatus) {
+    return <Login />
+  }
   return (
     <>
-      <UserProvider>
+      <UsersLoader>
         {userId ? <UserPage userId={userId} /> : <UsersList />}
-      </UserProvider>
+      </UsersLoader>
     </>
   )
 }

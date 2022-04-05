@@ -1,23 +1,36 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { orderBy } from 'lodash'
 import CommentsList from '../common/comments/commentsList'
 import AddCommentForm from '../common/comments/addCommentForm'
-import { useComments } from '../../hooks/useComments';
+import {
+  getComments,
+  getCommentsLoadingStatus,
+  loadCommentsList,
+  removeComment,
+  createComment,
+} from '../../store/comments'
 
 const Comments = () => {
-  const { createComment, comments, removeComment } = useComments()
+  const { userId } = useParams()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(loadCommentsList(userId))
+  }, [userId])
+  const isLoading = useSelector(getCommentsLoadingStatus())
+  const comments = useSelector(getComments())
 
   const handleRemove = (id) => {
-    removeComment(id)
+    dispatch(removeComment(id))
   }
 
   const handleSubmit = (data) => {
-    createComment(data)
+    dispatch(createComment({ ...data, pageId: userId }))
   }
 
-  if (comments.length !== 0) {
-    comments.sort((a, b) => b.created_at - a.created_at)
-  }
+  const sortedComments = orderBy(comments, ['created_at'], ['desc'])
 
   return (
     <>
@@ -33,7 +46,9 @@ const Comments = () => {
         <div className="card-body ">
           <h2>Comments</h2>
           <hr />
-          <CommentsList comments={comments} onRemove={handleRemove} />
+          {!isLoading
+            ? <CommentsList comments={sortedComments} onRemove={handleRemove} />
+            : 'Loading...'}
         </div>
       </div>
     </>

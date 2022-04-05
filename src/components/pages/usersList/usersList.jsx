@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import SearchStatus from '../../ui/searchStatus'
 import Input from '../../common/input'
 import UsersTable from '../../ui/usersTable'
@@ -7,15 +8,14 @@ import Pagination from '../../common/pagination'
 import GroupList from '../../common/groupList'
 import paginate from '../../../utils/paginate'
 import dinamicSort from '../../../utils/dinamicSort'
-import { useUser } from '../../../hooks/useUsers'
-import { useProfessions } from '../../../hooks/useProfessions'
-import { useAuth } from '../../../hooks/useAuth'
+import { getProfessions } from '../../../store/professions'
+import { getCurrentUserId, getUsers } from '../../../store/users'
 import '../../../styles/main.css'
 
 const UsersList = () => {
-  const { users } = useUser()
-  const { professions } = useProfessions()
-  const { currentUser } = useAuth()
+  const users = useSelector(getUsers())
+  const professions = useSelector(getProfessions())
+  const currentUserId = useSelector(getCurrentUserId())
   // const [searchUsers, setSearchUsers] = useState([])
 
   // ----------------data from array-----------------
@@ -54,7 +54,7 @@ const UsersList = () => {
     const filteredUsers = Object.keys(selectedProf).length !== 0
       ? data.filter((it) => it.profession.name === selectedProf.name)
       : data
-    return filteredUsers.filter((u) => u._id !== currentUser._id)
+    return filteredUsers.filter((u) => u._id !== currentUserId)
   }
   const filteredUsers = filterUser(users)
 

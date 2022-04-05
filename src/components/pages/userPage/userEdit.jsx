@@ -2,6 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 import BackHistoryButton from '../../common/backButton'
 import TextField from '../../common/form/textField'
@@ -9,19 +10,20 @@ import MultiSelectField from '../../common/form/multiSelectField'
 import RadioField from '../../common/form/radioField'
 import SelectField from '../../common/form/selectField'
 import validator from '../../../utils/validator'
-import { useAuth } from '../../../hooks/useAuth'
-import { useProfessions } from '../../../hooks/useProfessions'
-import { useQualities } from '../../../hooks/useQualities'
+import { getQualities } from '../../../store/qualities'
+import { getProfessions } from '../../../store/professions'
+import { getCurrentUserData, updateUser } from '../../../store/users'
 
 const UserEdit = () => {
+  const dispatch = useDispatch()
   const { id } = useParams()
   const [editData, setEditData] = useState()
   const [errors, setErrors] = useState({})
+  const currentUser = useSelector(getCurrentUserData())
 
-  const { currentUser, update } = useAuth()
-  const { professions } = useProfessions()
+  const professions = useSelector(getProfessions())
   const professionsList = professions.map((prof) => ({ label: prof.name, value: prof._id }))
-  const { qualities } = useQualities()
+  const qualities = useSelector(getQualities())
   const qualitiesList = qualities.map((qual) => ({ label: qual.name, value: qual._id }))
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const UserEdit = () => {
   const handleSubmit = () => {
     const isValidate = validate()
     if (!isValidate) return
-    update(editData)
+    dispatch(updateUser(editData))
   }
 
   if (editData && currentUser._id === id) {

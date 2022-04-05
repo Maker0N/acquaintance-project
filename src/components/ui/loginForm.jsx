@@ -3,17 +3,19 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import TextField from '../common/form/textField'
 import CheckBoxField from '../common/form/checkBoxField'
 import validator from '../../utils/validator'
-import { useAuth } from '../../hooks/useAuth'
+import { getAuthErrors, login } from '../../store/users'
 
 const LoginForm = () => {
   const history = useHistory()
+  const dispatch = useDispatch()
   const [data, setData] = useState({ email: '', password: '', stayOn: false })
   const [errors, setErrors] = useState({})
-  const { signIn } = useAuth()
+  const loginError = useSelector(getAuthErrors())
 
   const handleChange = (target) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }))
@@ -42,18 +44,14 @@ const LoginForm = () => {
     validate()
   }, [data])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     const isValidate = validate()
     if (!isValidate) return
-    try {
-      await signIn(data)
-      history.push(history.location.state
-        ? history.location.state.from.pathname
-        : '/')
-    } catch (error) {
-      setErrors(error)
-    }
+    const redirect = (history.location.state
+      ? history.location.state.from.pathname
+      : '/')
+    dispatch(login({ payload: data, redirect }))
   }
 
   return (
@@ -81,6 +79,7 @@ const LoginForm = () => {
       >
         Stay on system
       </CheckBoxField>
+      {loginError && <p className="text-danger">{loginError}</p>}
       <button type="submit" className="btn btn-primary w-100" disabled={!isValid}>Submit</button>
     </form>
   )
