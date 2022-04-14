@@ -5,6 +5,7 @@ const webpack = require('webpack')
 // eslint-disable-next-line import/no-extraneous-dependencies
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const NodemonPlugin = require('nodemon-webpack-plugin')
 // eslint-disable-next-line import/no-extraneous-dependencies
 // const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -111,6 +112,7 @@ const config = {
       'process.env': JSON.stringify(dotenv.parsed),
       'process.env.NODE_ENV': JSON.stringify(isDevelopment ? 'development' : 'production'),
     }),
+    [new NodemonPlugin()],
   ],
 }
 
